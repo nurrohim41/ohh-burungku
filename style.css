@@ -1,0 +1,235 @@
+#gameContent{
+    width: 800px;
+    height: 600px;
+    margin: auto;
+    background-image: url("assets/skybackground.jpg");
+    animation: sky 40s infinite linear;
+    background-repeat: round;
+    background-size: contain;
+    font-family: "comic sans ms";
+    font-weight: lighter;
+    position: relative;
+}
+
+#gameUI {
+    position: absolute;
+    width: 800px;
+    height: 450px;
+    margin: 75px 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    z-index: 2;
+}
+
+#uiMenu{
+    text-align: center;
+    margin: auto;
+}
+
+.bird1 {
+    animation: bird1 1s infinite linear;
+    background-repeat: no-repeat;
+    scale: 1.5;
+    width: 100px;
+    height: 69px;
+    margin: 20px 0 0 420px;
+    position: absolute;
+    transform: rotateY(180deg);
+}
+
+.bird2 {
+    animation: bird2 1s infinite linear;
+    background-repeat: no-repeat;
+    scale: 1.5;
+    width: 100px;
+    height: 69px;
+    margin: 60px 0 0 600px;
+    position: absolute;
+    transform: rotateY(180deg);
+}
+
+.bird3 {
+    animation: bird3 1s infinite linear;
+    background-repeat: no-repeat;
+    scale: 1.5;
+    width: 100px;
+    height: 69px;
+    margin: 130px 0 0 480px;
+    position: absolute;
+    transform: rotateY(180deg);
+}
+
+@keyframes sky {
+    0% {background-position: 512px 0;}
+    100% {background-position: -512px 0;}
+}
+
+@keyframes bird1 {
+    0% { background-image: url("assets/red_bird/frame-1.png");}
+    25% {background-image: url("assets/red_bird/frame-2.png");}
+    50% {background-image: url("assets/red_bird/frame-3.png");}
+    75% {background-image: url("assets/red_bird/frame-4.png");}
+    100% {background-image: url("assets/red_bird/frame-1.png");}
+}
+
+@keyframes bird2 {
+    0% {background-image: url("assets/yellow_bird/frame-1.png");}
+    25% {background-image: url("assets/yellow_bird/frame-2.png");}
+    50% {background-image: url("assets/yellow_bird/frame-3.png");}
+    75% {background-image: url("assets/yellow_bird/frame-4.png");}
+    100% {background-image: url("assets/yellow_bird/frame-1.png");}
+}
+
+@keyframes bird3 {
+    0% {background-image: url("assets/gray_bird/frame-1.png");}
+    25% {background-image: url("assets/gray_bird/frame-2.png");}
+    50% {background-image: url("assets/gray_bird/frame-3.png");}
+    75% {background-image: url("assets/gray_bird/frame-4.png");}
+    100% {background-image: url("assets/gray_bird/frame-1.png");}
+}
+
+#uiMenu .buttonMenu {
+    float: left;
+    width: 400px;
+}
+
+#uiMenu .buttonMenu a{
+    display: block;
+    background-image: url("assets/button/blue_button00.png");
+    background-repeat: no-repeat;
+    width: 190px;
+    height: 49px;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+#uiMenu .buttonMenu a:hover{
+    background-image: url("assets/button/blue_button01.png");
+}
+
+#backButton {
+    display: block;
+    position: absolute;
+    background-image: url("assets/button/red_sliderLeft.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 10px;
+    padding: 8px 15px;
+    width: 39px;
+    height: 31px;
+    cursor: pointer;
+}
+
+#uiRule {
+    text-align: center;
+    margin: auto;
+}
+
+#uiCredit {
+    text-align: center;
+    margin: auto;
+}
+
+.created {
+    width: 400px;
+    height: 350px;
+    float: left;
+}
+
+.created a {
+    color: black;
+    text-decoration: none;
+}
+
+.created img:not(.stmik) {
+    width: 300px;
+}
+
+.stmik {
+    width: 80px;
+}
+
+#uiWin {
+    text-align: center;
+    margin: auto;
+}
+
+#uiWin a {
+    float: left;
+    display: block;
+    background-image: url("assets/button/green_button00.png");
+    background-repeat: no-repeat;
+    width: 190px;
+    height: 49px;
+    cursor: pointer;
+}
+
+#uiWin a:hover {
+    background-image: url("assets/button/green_button01.png");
+}
+
+#uiLose {
+    text-align: center;
+    margin: auto;
+}
+
+#uiStats {
+    width: 800px;
+    position: absolute;
+    text-align: center;
+}
+
+.score {
+    position: absolute;
+    margin: 30px 0 0 20px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    color: gray;
+}
+
+.hp {
+    position: absolute;
+    margin: 10px;
+    padding: 5px;
+    float: left;
+    width: 300px;
+    height: 25px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.hpbar {
+    width: 50%;
+    height: 100%;
+    background-color: rgb(70, 255, 70);
+}
+
+.petrol {
+    position: absolute;
+    margin: 10px 10px 10px 400px;
+    padding: 5px;
+    float: left;
+    width: 300px;
+    height: 25px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.petrolbar {
+    width: 10%;
+    height: 100%;
+    background-color: rgb(250, 70, 70);
+}
+
+.groundBackground {
+    background: url("assets/ground.png");
+    background-size: contain;
+    margin-top: 465px;
+    width: 800px;
+    height: 140px;
+    position: absolute;
+}
+
+#gameCanvas {
+    z-index: 1;
+    position: relative;
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tugas UAS Game</title>
+    <link href="style.css" type="text/css" rel="stylesheet">
+    <script src="jquery.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+  <body>
+    
+    <div id="gameContent">
+      <div id="gameUI">
+        <div id="uiMenu">
+          <img class="name" src="assets/logo.png">
+          <div class="bird">
+            <div class="bird1"></div>
+            <div class="bird2"></div>
+            <div class="bird3"></div>
+          </div>
+          <div class="buttonMenu">
+            <a id="playButton" style="margin: 0 40px;">Mulai</a>
+            <a id="ruleButton" style="margin: 0 80px;">Cara Main</a>
+            <a id="creditButton" style="margin: 0 120px;">Credit</a>
+          </div>
+        </div>
+        <div id="uiRule" style="display: none;">
+          <a id="backButton">Back</a>
+          <h1>Cara Bermain</h1>
+          <table border="1">
+            <tr>
+              <th>Langkah 1</th>
+              <th>Langkah 2</th>
+            </tr>
+            <tr>
+              <td class="img-langkah"></td>
+              <td class="img-langkah"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+        <div id="uiCredit" style="display: none;">
+          <a id="backButton">Back</a>
+          <h1>About</h1>
+          <div class="created">
+            <h2>Created By :</h2>
+            <img src="assets/pembuat.jpg">
+            <p>Muhammad Nur Rohim - 17.5.00076</p>
+          </div>
+          <div class="created">
+            <h2>Thanks To :</h2>
+            <img class="stmik" src="assets/stmik.png">
+            <p>STMIK Sinar Nusantara</p><hr>
+            <a href="https://kenney.nl">http://kenney.nl</a><hr>
+            <a href="https://www.gamedeveloperstudio.com/graphics/viewgraphic.php?item=115h1m7u2p5899211p">https://www.gamedeveloperstudio.com/graphics/viewgraphic.php?item=115h1m7u2p5899211p</a><hr>
+            <a href="http://clipart-library.com/clipart/1753991.htm">http://clipart-library.com/clipart/1753991.htm</a><hr>
+            <a href="https://www.pngfuel.com/free-png/anfbu">https://www.pngfuel.com/free-png/anfbu</a><hr>
+          </div>
+        </div>
+        <div id="uiWin" style="display: none;">
+          <h1>Menang</h1>
+          <a class="playAgain" style="margin: 10px;">Main Lagi</a>
+          <a class="quit" style="margin: 10px;">Main Menu</a>
+        </div>
+        <div id="uiLose" style="display: none;">
+          <h1>Menang</h1>
+        </div>
+      </div>
+      <div id="uiStats" style="display: none;">
+        <div class="hp"><div class="hpbar">HP</div></div>
+        <div class="petrol"><div class="petrolbar">Petrol</div></div>
+        <div class="score"><h2>Score : <span id="scoreNum"></span></h2></div>
+      </div>
+      <div class ="groundBackground"></div>
+      <canvas id="gameCanvas" width="800px" height="600px"></canvas>
+    </div>
+  </body>
+</html>
