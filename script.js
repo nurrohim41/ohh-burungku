@@ -30,6 +30,11 @@ $(document).ready(function() {
     imgPlayer1.src = "assets/player_flying.png";
     var imgPlayer2 = new Image();
     imgPlayer2.src = "assets/player_running.png";
+    var imgPlayer3 = new Image();
+    imgPlayer3.src = "assets/player_flying_shoot.png";
+    var imgPlayer4 = new Image();
+    imgPlayer4.src = "assets/player_running_shoot.png";
+
     var imgBird = new Image();
     var Bullet = function(x, y) {
 		this.x = x;
@@ -66,6 +71,16 @@ $(document).ready(function() {
         context.drawImage(imgPlayer1, column*frameWidth, row*frameHeight, 881, 639, x, y, 176, 121); 
     }
 
+    function draw_player_flying_shoot(x, y) {
+        var frameWidth = imgPlayer3.width / spriteColumns;
+        var frameHeight = imgPlayer3.height / 2;
+        var maxFrame = spriteColumns * 2 - 1;
+        if(currentFrame > maxFrame) {currentFrame = 0};
+        var column = currentFrame % spriteColumns;
+        var row = Math.floor(currentFrame / spriteColumns);
+        context.drawImage(imgPlayer3, column*frameWidth, row*frameHeight, 881, 639, x, y, 176, 121); 
+    }
+
     function draw_player_running(x, y) {
         var frameWidth = imgPlayer2.width / spriteColumns;
         var frameHeight = imgPlayer2.height / spriteRows;
@@ -74,6 +89,14 @@ $(document).ready(function() {
         var column = currentFrame % spriteColumns;
         var row = Math.floor(currentFrame / spriteColumns);
         context.drawImage(imgPlayer2, column*frameWidth, row*frameHeight, 881, 639, x, y, 176, 121); 
+    }
+
+    function draw_player_running_shoot(x, y) {
+        var frameWidth = imgPlayer4.width / spriteColumns;
+        var maxFrame = spriteColumns;
+        if(currentFrame > maxFrame) {currentFrame = 0};
+        var column = currentFrame % spriteColumns;
+        context.drawImage(imgPlayer4, column*frameWidth, 0, 881, 639, x, y, 176, 121); 
     }
 
     function draw_bird(x, y) {
@@ -131,11 +154,11 @@ $(document).ready(function() {
         
         for (var i = 0; i < numBirds; i++) {
             var x = Math.floor(Math.random()*canvasWidth)+canvasWidth;
-          	var y = Math.floor(Math.random()*canvasHeight);
+          	var y = Math.floor(Math.random()*canvasHeight-190);
             bird.push(new Bird(x, y));
         };
 
-        player = new Player(-50, canvasHeight/2);
+        player = new Player(-50, 410);
         $(window).keydown(function(e) {
             var keyCode = e.keyCode;
             if (keyCode == arrowRight) {
@@ -193,9 +216,10 @@ $(document).ready(function() {
             context.closePath();
             context.fill();
             tmpBullet.x += tmpBullet.vX;
-            if(tmpBullet >= canvasWidth) {
+            if(tmpBullet.x >= canvasWidth) {
                 var idxBullet = bullets.indexOf(tmpBullet);
                 bullets.splice(idxBullet, 1);
+                break;
             }
         }
 
@@ -233,7 +257,7 @@ $(document).ready(function() {
             draw_player_flying(player.x, player.y);
         } else {
             draw_player_running(player.x, player.y);
-        }
+        };
         if(playGame) {
             setTimeout(Update, 33);
         };
