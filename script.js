@@ -5,7 +5,7 @@ $(document).ready(function() {
     var canvasHeight = canvas.height();
 
     var stepX = 10;
-    var stepY = 12;
+    var stepY = 10;
     var birdStep = 3;
     var keySpace = 32;
     var arrowLeft = 37;
@@ -16,7 +16,6 @@ $(document).ready(function() {
     var spriteColumns = 5;
     var spriteRows = 3;
     var currentFrame = 0;
-
     var maxHp = 100;
     var maxPetrol = 500;
     var playGame = false;
@@ -36,6 +35,8 @@ $(document).ready(function() {
     imgPlayer3.src = "assets/player_flying_shoot.png";
     var imgPlayer4 = new Image();
     imgPlayer4.src = "assets/player_running_shoot.png";
+    var imgBullet = new Image();
+    imgBullet.src = "assets/long-ray.png";
 
     var imgBird = new Image();
     var Bullet = function(x, y) {
@@ -45,7 +46,7 @@ $(document).ready(function() {
 		this.height = 1;		
 		this.halfWidth = this.width/2;
         this.halfHeight = this.height/2;
-        this.vX = 10;
+        this.vX = 15;
     };
     var Bird = function(x, y) {
         this.x = x;
@@ -102,6 +103,10 @@ $(document).ready(function() {
         context.drawImage(imgBird, x, y, 50, 35);
     }
 
+    function draw_bullet(x, y) {
+        context.drawImage(imgBullet, x, y, 33.8, 6.6);
+    }
+
     function init() {
         //uiMenu.hide();
         playButton.click(function(e) {
@@ -131,7 +136,9 @@ $(document).ready(function() {
     init();
 
     function Start() {
-        playGame = false;
+        if(!playGame) {
+            playGame = true;
+        };
         scoreNum.html("0");
         score = 0;
         hpBar.css({"width": "100%"});
@@ -141,18 +148,14 @@ $(document).ready(function() {
         numBirds = 3;
         
         for (var i = 0; i < numBirds; i++) {
-            var x = Math.floor(Math.random()*canvasWidth)+canvasWidth;
-          	var y = Math.floor(Math.random()*canvasHeight-190);
+            var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth/2;
+            var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight-190/5))+canvasHeight-150;
             bird.push(new Bird(x, y));
         };
 
         player = new Player(-50, 410);
         $(window).keydown(function(e) {
             var keyCode = e.keyCode;
-            if(!playGame) {
-                playGame = true;
-                Update();
-            };
             if (keyCode == arrowRight) {
                 player.moveRight = true;
             } else if (keyCode == arrowUp) {
@@ -202,11 +205,7 @@ $(document).ready(function() {
         var bulletsLength = bullets.length;
 		for (var i = 0; i < bulletsLength; i++) {
 			var tmpBullet = bullets[i];
-			context.fillStyle = "rgb(0, 0, 0)";
-            context.beginPath();
-            context.arc(tmpBullet.x, tmpBullet.y, 3, 0, Math.PI*2, true);
-            context.closePath();
-            context.fill();
+            draw_bullet(tmpBullet.x, tmpBullet.y);
             tmpBullet.x += tmpBullet.vX;
             if(tmpBullet.x >= canvasWidth) {
                 var idxBullet = bullets.indexOf(tmpBullet);
@@ -220,12 +219,11 @@ $(document).ready(function() {
             var tmpBird = bird[i];
             draw_bird(tmpBird.x, tmpBird.y);
             bird[i].x = bird[i].x - birdStep;
-            console.log(numBirds);
             var bulletsLength = bullets.length;
 			for (var j = bulletsLength-1; j > -1; j--) {
 				var tmpBullet = bullets[j];
 				if (tmpBird.x + 50 >= tmpBullet.x && tmpBird.x + 0 < tmpBullet.x + 10 &&
-                    tmpBird.y + 35 >= tmpBullet.y && tmpBird.y + 0 < tmpBullet.y + 10) {
+                    tmpBird.y + 35 >= tmpBullet.y && tmpBird.y + 0 < tmpBullet.y + 6.6) {
                         var idxBird = bird.indexOf(tmpBird);
                         var idxBullet = bullets.indexOf(tmpBullet);
                         bird.splice(idxBird,1);
@@ -247,8 +245,8 @@ $(document).ready(function() {
                 break;
             }
             while(bird.length < numBirds) {
-                var x = Math.floor(Math.random()*canvasWidth)+canvasWidth;
-                var y = Math.floor(Math.random()*canvasHeight-190);
+                var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth/2;
+                var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight-190/5))+canvasHeight-150;
                 bird.push(new Bird(x, y));
             }
         }

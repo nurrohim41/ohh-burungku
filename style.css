@@ -153,12 +153,12 @@
     width: 120px;
 }
 
-#uiWin {
+#uiWin, #uiLose {
     text-align: center;
     margin: auto;
 }
 
-#uiWin a {
+#uiWin a, #uiLose a {
     margin: 10px auto;
     display: block;
     background-image: url("assets/button/green_button00.png");
@@ -168,13 +168,8 @@
     cursor: pointer;
 }
 
-#uiWin a:hover {
+#uiWin a:hover, #uiLose a:hover {
     background-image: url("assets/button/green_button01.png");
-}
-
-#uiLose {
-    text-align: center;
-    margin: auto;
 }
 
 #uiStats {
@@ -187,7 +182,7 @@
     margin-top: -10px;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
-    color: gray;
+    color: white;
 }
 
 .hp {
