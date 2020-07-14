@@ -6,7 +6,7 @@ $(document).ready(function() {
 
     var stepX = 10;
     var stepY = 12;
-    var birdStep = 3;
+    var birdStep = 5;
     var keySpace = 32;
     var arrowLeft = 37;
     var arrowUp = 38;
@@ -17,6 +17,8 @@ $(document).ready(function() {
     var spriteRows = 3;
     var currentFrame = 0;
 
+    var maxHp = 100;
+    var maxPetrol = 500;
     var playGame = false;
     var score;
     var bullets;
@@ -60,6 +62,8 @@ $(document).ready(function() {
     var ruleButton = $("#ruleButton");
     var creditButton = $("#creditButton");
     var backButton = $("#backButton");
+    var hpBar = $("#hpBar");
+    var petrolBar = $("#petrolBar");
 
     function draw_player_flying(x, y) {
         var frameWidth = imgPlayer1.width / spriteColumns;
@@ -148,6 +152,8 @@ $(document).ready(function() {
         }
         scoreNum.html("0");
         score = 0;
+        hpBar.css({"width": "100%"});
+        petrolBar.css({"width": "100%"})
         bullets = new Array();
         bird = new Array();
         numBirds = 3;
@@ -242,9 +248,16 @@ $(document).ready(function() {
 					break;
                 }
             }
+            if (tmpBird.x + 50 >= player.x && tmpBird.x + 0 < player.x + 176 &&
+                tmpBird.y + 50 >= player.y && tmpBird.y + 0 < player.y +121) {
+                    var idxBird = bird.indexOf(tmpBird);
+                    bird.splice(idxBird, 1);
+                    break;
+                }
             if(tmpBird.x <= 10) {
                 var idxBird = bird.indexOf(tmpBird);
                 bird.splice(idxBird, 1);
+                break;
             }
             while(bird.length < numBirds) {
                 var x = Math.floor(Math.random()*canvasWidth)+canvasWidth;
@@ -255,9 +268,19 @@ $(document).ready(function() {
         currentFrame++;
         if(player.y < 410) {
             draw_player_flying(player.x, player.y);
+            if(maxPetrol <= 100) {
+                if(player.y < 410) {player.y++};
+            } else if(maxPetrol <= 0) {
+                maxPetrol = 0;
+                if(player.y < 410) {player.y++};
+            }else {
+                maxPetrol--;
+                petrolBar.css({"width": maxPetrol/5 + "%"});
+            }
         } else {
             draw_player_running(player.x, player.y);
         };
+        console.log(player.y);
         if(playGame) {
             setTimeout(Update, 33);
         };

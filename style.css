@@ -197,8 +197,8 @@
     background-color: white;
 }
 
-.hpbar {
-    width: 50%;
+#hpBar {
+    width: 1%;
     height: 100%;
     background-color: rgb(70, 255, 70);
 }
@@ -214,8 +214,8 @@
     background-color: white;
 }
 
-.petrolbar {
-    width: 10%;
+#petrolBar {
+    width: 1%;
     height: 100%;
     background-color: rgb(250, 70, 70);
 }
