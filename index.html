@@ -24,32 +24,56 @@
           </div>
         </div>
         <div id="uiRule" style="display: none;">
-          <a id="backButton">Back</a>
+          <a class="backButton">Back</a>
           <h1>Cara Bermain</h1>
-          <table border="1">
+          <table class="ruleTable" border="1">
             <tr>
               <th>Langkah 1</th>
               <th>Langkah 2</th>
+              <th>Langkah 3</th>
+              <th>Langkah 4</th>
             </tr>
             <tr>
               <td class="img-langkah"></td>
               <td class="img-langkah"></td>
+              <td class="img-langkah"></td>
+              <td class="img-langkah"></td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
+              <td>Gunakan tombol atas dan bawah pada keyboard untuk menggerakkan karakter</td>
+              <td>Gunakan tombol spasi untuk menembak</td>
+              <td>Saat anda menggunakan jetpack, bahan bakar akan terus berkurang</td>
+              <td>Saat anda berlari, bahan bakar akan bertambah</td>
+            </tr>
+            <tr>
+              <th>Langkah 5</th>
+              <th>Langkah 6</th>
+              <th>Langkah 7</th>
+              <th>Langkah 8</th>
+            </tr>
+            <tr>
+              <td class="img-langkah"></td>
+              <td class="img-langkah"></td>
+              <td class="img-langkah"></td>
+              <td class="img-langkah"></td>
+            </tr>
+            <tr>
+              <td>Semakin banyak score yang didapatkan, kecepatan burung akan semakin cepat</td>
+              <td>HP akan berkurang apabila terkena burung</td>
+              <td>Apabila HP habis, maka permainan herakhir</td>
+              <td>Untuk memenangkan permainan, belilah semua perlengkapan</td>
             </tr>
           </table>
         </div>
         <div id="uiCredit" style="display: none;">
-          <a id="backButton">Back</a>
+          <a class="backButton">Back</a>
           <h1>About</h1>
-          <div class="created">
+          <div class="created" style="margin-top: -40px;">
             <h2>Created By :</h2>
             <img src="assets/pembuat.jpg">
             <p>Muhammad Nur Rohim - 17.5.00076</p>
           </div>
-          <div class="created">
+          <div class="created" style="margin-top: -40px;">
             <h2>Thanks To :</h2>
             <img class="stmik" src="assets/stmik.png">
             <p>STMIK Sinar Nusantara</p><hr>
@@ -61,17 +85,26 @@
         </div>
         <div id="uiWin" style="display: none;">
           <h1>Menang</h1>
-          <a class="playAgain" style="margin: 10px;">Main Lagi</a>
-          <a class="quit" style="margin: 10px;">Main Menu</a>
+          <div><p>Score Anda : <span class="scoreNum"></span></p></div>
+          <div class="created">
+            <img src="assets/pembuat.jpg">
+            <h3>Muhammad Nur Rohim - 17.5.00076</h3>
+          </div>
+          <div class="created">
+            <img class="stmik" src="assets/stmik.png">
+            <p>STMIK Sinar Nusantara</p>
+            <a class="playAgain">Main Lagi</a>
+            <a class="quit">Main Menu</a>
+          </div>
         </div>
         <div id="uiLose" style="display: none;">
-          <h1>Menang</h1>
+          <h1>Kalah</h1>
         </div>
       </div>
       <div id="uiStats" style="display: none;">
         <div class="hp"><div id="hpBar">HP</div></div>
         <div class="petrol"><div id="petrolBar">Petrol</div></div>
-        <div class="score"><h2>Score : <span id="scoreNum"></span></h2></div>
+        <div class="score"><h2>Score : <span class="scoreNum"></span></h2></div>
       </div>
       <div class ="groundBackground"></div>
       <canvas id="gameCanvas" width="800px" height="600px"></canvas>

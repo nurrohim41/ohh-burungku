@@ -14,8 +14,8 @@
 #gameUI {
     position: absolute;
     width: 800px;
-    height: 450px;
-    margin: 75px 0;
+    height: 500px;
+    margin: 50px 0;
     background-color: rgba(255, 255, 255, 0.6);
     z-index: 2;
 }
@@ -106,7 +106,7 @@
     background-image: url("assets/button/blue_button01.png");
 }
 
-#backButton {
+.backButton {
     display: block;
     position: absolute;
     background-image: url("assets/button/red_sliderLeft.png");
@@ -122,6 +122,11 @@
 #uiRule {
     text-align: center;
     margin: auto;
+}
+
+.ruleTable td {
+    width: 25%;
+    vertical-align: top;
 }
 
 #uiCredit {
@@ -145,7 +150,7 @@
 }
 
 .stmik {
-    width: 80px;
+    width: 120px;
 }
 
 #uiWin {
@@ -154,7 +159,7 @@
 }
 
 #uiWin a {
-    float: left;
+    margin: 10px auto;
     display: block;
     background-image: url("assets/button/green_button00.png");
     background-repeat: no-repeat;
@@ -179,8 +184,7 @@
 }
 
 .score {
-    position: absolute;
-    margin: 30px 0 0 20px;
+    margin-top: -10px;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
     color: gray;
@@ -205,7 +209,7 @@
 
 .petrol {
     position: absolute;
-    margin: 10px 10px 10px 400px;
+    margin: 10px 10px 10px 478px;
     padding: 5px;
     float: left;
     width: 300px;
