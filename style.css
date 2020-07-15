@@ -233,23 +233,6 @@
     position: absolute;
 }
 
-.craftButton {
-    background-image: url("assets/button/yellow_button06.png");
-    background-size: contain;
-    width: 49px;
-    height: 49px;
-    margin-left: 10px;
-}
-
-.craft {
-    text-align: left;
-}
-
-.craft img {
-    margin: 8px 10px;
-    width: 30px;
-}
-
 #gameCanvas {
     z-index: 1;
     position: relative;

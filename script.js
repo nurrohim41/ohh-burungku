@@ -20,11 +20,12 @@ $(document).ready(function() {
     var currentFrame = 0;
     var maxHp = 100;
     var maxPetrol = 500;
+    var maxHpBird = 200;
     
     var playGame = false;
     var score;
     var bullets;
-    var bird1, bird2, bird3;
+    var bird1, bird2, bird3, bird4;
     var player;
     var Player = function (x, y) {
         this.x = x;
@@ -44,6 +45,7 @@ $(document).ready(function() {
     var imgBird1 = new Image();
     var imgBird2 = new Image();
     var imgBird3 = new Image();
+    var imgBird4 = new Image();
     var Bullet = function(x, y) {
 		this.x = x;
 		this.y = y;
@@ -101,7 +103,7 @@ $(document).ready(function() {
         }else if(currentFrame == 20) {
             currentFrame = 0;
         }
-        context.drawImage(imgBird1, x, y, 50, 35);
+        context.drawImage(imgBird1, x, y, 50, 36);
     }
 
     function draw_bird2(x, y) {
@@ -116,7 +118,7 @@ $(document).ready(function() {
         }else if(currentFrame == 20) {
             currentFrame = 0;
         }
-        context.drawImage(imgBird2, x, y, 50, 35);
+        context.drawImage(imgBird2, x, y, 50, 36);
     }
 
     function draw_bird3(x, y) {
@@ -131,7 +133,22 @@ $(document).ready(function() {
         }else if(currentFrame == 20) {
             currentFrame = 0;
         }
-        context.drawImage(imgBird3, x, y, 50, 35);
+        context.drawImage(imgBird3, x, y, 50, 36);
+    }
+
+    function draw_bird4(x, y) {
+        if(currentFrame == 4) {
+            imgBird4.src = "assets/blue_bird/frame-1.png";
+        }else if(currentFrame == 8) {
+            imgBird4.src = "assets/blue_bird/frame-2.png";
+        }else if(currentFrame == 12) {
+            imgBird4.src = "assets/blue_bird/frame-3.png";
+        }else if(currentFrame == 16) {
+            imgBird4.src = "assets/blue_bird/frame-4.png";
+        }else if(currentFrame == 20) {
+            currentFrame = 0;
+        }
+        context.drawImage(imgBird4, x, y, 300, 277);
     }
 
     function draw_bullet(x, y) {
@@ -178,17 +195,18 @@ $(document).ready(function() {
         bird1 = new Array();
         bird2 = new Array();
         bird3 = new Array();
+        bird4 = new Array();
         numBirds = 2;
 
         // Burung 1
         for (var i = 0; i < numBirds; i++) {
-            var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth/2;
+            var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth;
             var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight-190/2) + canvasHeight/2);
             bird1.push(new Bird(x, y));
         };
         // Burung 2
         for (var i = 0; i < numBirds; i++) {
-            var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth/2;
+            var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth;
             var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight-190/2)) + canvasHeight/1.5;
             bird2.push(new Bird(x, y));
         };
@@ -197,7 +215,7 @@ $(document).ready(function() {
             var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2)) + canvasWidth/2;
             bird3.push(new Bird(x, 440));
         };
-
+        bird4.push(new Bird(1000, 1000));
         player = new Player(-50, 410);
         $(window).keydown(function(e) {
             var keyCode = e.keyCode;
@@ -369,6 +387,47 @@ $(document).ready(function() {
                 bird3.push(new Bird(x, 440));
             }
         }
+        if(score >= 5) {
+            bird1.splice(bird1);
+            bird2.splice(bird2);
+            bird3.splice(bird3);
+            
+            var birdLength4 = bird4.length;
+            for (var i = birdLength4-1; i > -1; i--) {
+                var tmpBird = bird4[i];
+                draw_bird4(tmpBird.x, tmpBird.y);
+                if(bird4.length < 2) bird4.push(new Bird(800, canvasHeight/4));
+                bird4[i].x = bird4[i].x - birdSpeedGray;
+                var bulletsLength = bullets.length;
+                for (var j = bulletsLength-1; j > -1; j--) {
+                    var tmpBullet = bullets[j];
+                    if (tmpBird.x + 200 >= tmpBullet.x && tmpBird.x + 0 < tmpBullet.x + 10 &&
+                        tmpBird.y + 144 >= tmpBullet.y && tmpBird.y + 0 < tmpBullet.y + 6.6) {
+                            var idxBird = bird4.indexOf(tmpBird);
+                            var idxBullet = bullets.indexOf(tmpBullet);
+                            bullets.splice(idxBullet,1);
+                            if(maxHpBird > 0) {
+                                maxHpBird -= 10;
+                            } else {
+                                bird4.splice(idxBird, 1);
+                            }
+                            break;
+                        }
+                }
+                if (tmpBird.x + 200 >= player.x && tmpBird.x + 0 < player.x + 150 &&
+                    tmpBird.y + 144 >= player.y && tmpBird.y + 0 < player.y + 121) {
+                        var idxBird = bird4.indexOf(tmpBird);
+                        bird4.splice(idxBird, 1);
+                        maxHp = 0;
+                        break;
+                    }
+                if(tmpBird.x <= 10) {
+                    var idxBird = bird4.indexOf(tmpBird);
+                    bird4.splice(idxBird, 1);
+                    break;
+                }
+            }
+        }
 
         currentFrame++;
         if(player.y < 410) {
@@ -392,6 +451,11 @@ $(document).ready(function() {
             gameUI.show();
             uiLose.show();
         };
+        if(maxHpBird <= 0) {
+            playGame = false;
+            gameUI.show();
+            uiWin.show();
+        }
 
         hpBar.css({"width": maxHp + "%"});
         petrolBar.css({"width": maxPetrol/5 + "%"});
