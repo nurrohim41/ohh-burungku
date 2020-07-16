@@ -77,6 +77,11 @@ $(document).ready(function() {
     var petrolBar = $("#petrolBar");
     var bossHpBar = $("#bossHpBar");
 
+    var gameSoundBackground = $("#gameSoundBackground").get(0);
+    var gameSoundShot = $("#gameSoundShot").get(0);
+    var gameSoundExplosion = $("#gameSoundExplosion").get(0);
+    var gameSoundWind = $("#gameSoundWind").get(0);
+
     function draw_player_flying(x, y) {
         var frameWidth = imgPlayer1.width / spriteColumns;
         var frameHeight = imgPlayer1.height / spriteRows;
@@ -162,6 +167,7 @@ $(document).ready(function() {
     }
 
     function init() {
+        gameSoundBackground.play();
         playButton.click(function(e) {
             e.preventDefault();
             gameUI.hide();
@@ -200,11 +206,14 @@ $(document).ready(function() {
             uiLose.hide();
             uiWin.hide();
             playGame = false;
+            gameSoundBackground.currentTime = 0;
+            gameSoundBackground.play();
         });
     };
     init();
 
     function start() {
+        gameSoundBackground.pause();
         if(!playGame) {
             playGame = true;
 		};
@@ -260,6 +269,7 @@ $(document).ready(function() {
             } else if (keyCode == arrowLeft) {
                 player.moveLeft = false;
             } else if(keyCode == keySpace) {
+                gameSoundShot.play();
                 bullets.push(new Bullet(player.x + 150, player.y + 55));
             };
         });
@@ -313,7 +323,7 @@ $(document).ready(function() {
             bird2.splice(bird2);
 			bird3.splice(bird3);
 			moveTimer++;
-			if(moveTimer % 100 == 0 ){
+			if(moveTimer % 50 == 0 ){
 				bird4.x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth/2;
 				bird4.y = Math.floor(Math.random()*(canvasHeight - canvasHeight/2));
 			}
@@ -477,6 +487,7 @@ $(document).ready(function() {
 
         if(maxHp <= 0) {
             playGame = false;
+            gameSoundExplosion.play();
             gameUI.show();
             uiLose.show();
         };

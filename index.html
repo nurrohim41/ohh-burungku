@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Tugas UAS Game</title>
+    <meta charset="utf-8">
     <link href="style.css" type="text/css" rel="stylesheet">
     <script src="jquery.min.js"></script>
     <script src="script.js"></script>
@@ -75,29 +76,29 @@
           </div>
         </div>
         <div id="uiWin" style="display: none;">
-          <h1>Menang</h1>
+          <h2>Menang</h2>
           <div><p>Score Anda : <span class="scoreNum"></span></p></div>
           <div class="created">
             <img src="assets/pembuat.jpg">
-            <h3>Muhammad Nur Rohim - 17.5.00076</h3>
+            <p>Muhammad Nur Rohim - 17.5.00076</p>
           </div>
           <div class="created">
             <img class="stmik" src="assets/stmik.png">
-            <p>STMIK Sinar Nusantara</p>
+            <p>STMIK Sinar Nusantara</p><br><br>
             <a class="retryButton">Main Lagi</a>
             <a class="quitButton">Main Menu</a>
           </div>
         </div>
         <div id="uiLose" style="display: none;">
-          <h1>Kalah</h1>
+          <h2>Kalah</h2>
           <div><p>Score Anda : <span class="scoreNum"></span></p></div>
           <div class="created">
             <img src="assets/pembuat.jpg">
-            <h3>Muhammad Nur Rohim - 17.5.00076</h3>
+            <p>Muhammad Nur Rohim - 17.5.00076</p>
           </div>
           <div class="created">
             <img class="stmik" src="assets/stmik.png">
-            <p>STMIK Sinar Nusantara</p>
+            <p>STMIK Sinar Nusantara</p><br><br>
             <a class="retryButton">Main Lagi</a>
             <a class="quitButton">Main Menu</a>
           </div>
@@ -122,6 +123,22 @@
       </div>
       <div class ="groundBackground"></div>
       <canvas id="gameCanvas" width="800px" height="600px"></canvas>
+      <audio id="gameSoundBackground" loop>
+        <source src="assets/audio/Field2.ogg">
+        <source src="assets/audio/">
+      </audio>
+      <audio id="gameSoundShot">
+        <source src="assets/audio/Shot1.ogg">
+        <source src="assets/audio/Shot1.m4a">
+      </audio>
+      <audio id="gameSoundExplosion">
+        <source src="assets/audio/Explosion2.ogg">
+        <source src="assets/audio/Explosion2.m4a">
+      </audio>
+      <audio id="gameSoundWind" loop>
+        <source src="assets/audio/Wind.ogg">
+        <source src="assets/audio/Wind.m4a">
+      </audio>
     </div>
   </body>
 </html>

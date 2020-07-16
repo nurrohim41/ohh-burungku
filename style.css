@@ -154,7 +154,8 @@
 .created p, .created hr, .created, h3 {margin: 3px 0;}
 
 .created img:not(.stmik) {
-    width: 300px;
+    width: 250px;
+    margin-top: 20px;
 }
 
 .stmik {
@@ -166,8 +167,11 @@
     margin: auto;
 }
 
+#uiWin p, #uiLose p, #uiWin h2, #uiLose h2{margin-bottom: 0;}
+
 #uiWin a, #uiLose a {
-    margin: 10px auto;
+    margin: 20px auto;
+    padding-top: 12px;
     display: block;
     background-image: url("assets/button/green_button00.png");
     background-repeat: no-repeat;
