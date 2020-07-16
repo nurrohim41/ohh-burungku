@@ -18,14 +18,17 @@ $(document).ready(function() {
     var spriteColumns = 5;
     var spriteRows = 3;
     var currentFrame = 0;
-    var maxHp = 100;
-    var maxPetrol = 500;
-    var maxHpBird = 200;
-    
-    var playGame = false;
+    var maxHp;
+    var maxPetrol;
+    var maxHpBird;
+	
+	var playGame = false;
+    var moveTimer;
+    var bossTimer;
     var score;
     var bullets;
-    var bird1, bird2, bird3, bird4;
+	var bird1, bird2, bird3, bird4;
+	
     var player;
     var Player = function (x, y) {
         this.x = x;
@@ -68,8 +71,11 @@ $(document).ready(function() {
     var ruleButton = $("#ruleButton");
     var creditButton = $("#creditButton");
     var backButton = $(".backButton");
+    var retryButton = $(".retryButton");
+    var quitButton = $(".quitButton");
     var hpBar = $("#hpBar");
     var petrolBar = $("#petrolBar");
+    var bossHpBar = $("#bossHpBar");
 
     function draw_player_flying(x, y) {
         var frameWidth = imgPlayer1.width / spriteColumns;
@@ -148,7 +154,7 @@ $(document).ready(function() {
         }else if(currentFrame == 20) {
             currentFrame = 0;
         }
-        context.drawImage(imgBird4, x, y, 300, 277);
+        context.drawImage(imgBird4, x, y, 200, 144);
     }
 
     function draw_bullet(x, y) {
@@ -156,13 +162,12 @@ $(document).ready(function() {
     }
 
     function init() {
-        //uiMenu.hide();
         playButton.click(function(e) {
             e.preventDefault();
             gameUI.hide();
             uiMenu.hide();
             uiStats.show();
-            Start();
+            start();
         });
         ruleButton.click(function(e) {
             e.preventDefault();
@@ -180,43 +185,58 @@ $(document).ready(function() {
             uiRule.hide();
             uiCredit.hide();
         });
+        retryButton.click(function(e) {
+            e.preventDefault();
+            gameUI.hide();
+            uiWin.hide();
+            uiLose.hide();
+            uiStats.show();
+            start();
+        });
+        quitButton.click(function(e) {
+            e.preventDefault();
+            gameUI.show();
+            uiMenu.show();
+            uiLose.hide();
+            uiWin.hide();
+            playGame = false;
+        });
     };
     init();
 
-    function Start() {
+    function start() {
         if(!playGame) {
             playGame = true;
-        };
+		};
+		
         scoreNum.html("0");
-        score = 0;
+		score = 0;
+        moveTimer = 0;
+        bossTimer = 0;
+        maxBossTimer = 100;
+        maxHp = 100;
+        maxHpBird = 200;
+        maxPetrol = 500;
+        bossHpBar.css({"width": "0%"})
         hpBar.css({"width": "100%"});
-        petrolBar.css({"width": "100%"})
+		petrolBar.css({"width": "100%"})
+		
         bullets = new Array();
         bird1 = new Array();
         bird2 = new Array();
-        bird3 = new Array();
-        bird4 = new Array();
-        numBirds = 2;
+		bird3 = new Array();
+        numBirds = 3;
 
-        // Burung 1
-        for (var i = 0; i < numBirds; i++) {
-            var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth;
-            var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight-190/2) + canvasHeight/2);
-            bird1.push(new Bird(x, y));
-        };
-        // Burung 2
-        for (var i = 0; i < numBirds; i++) {
-            var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth;
-            var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight-190/2)) + canvasHeight/1.5;
-            bird2.push(new Bird(x, y));
-        };
-        // Burung 3
         for (var i = 0; i < 1; i++) {
-            var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2)) + canvasWidth/2;
-            bird3.push(new Bird(x, 440));
+            var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth;
+            var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight/5)) + canvasHeight/5;
+            bird3.push(new Bird(x, y));
         };
-        bird4.push(new Bird(1000, 1000));
+        bird1.push(new Bird(20, 1000));
+        bird2.push(new Bird(20, 1000));
+        bird4 = new Bird(10, 1000);
         player = new Player(-50, 410);
+
         $(window).keydown(function(e) {
             var keyCode = e.keyCode;
             if (keyCode == arrowRight) {
@@ -243,10 +263,21 @@ $(document).ready(function() {
                 bullets.push(new Bullet(player.x + 150, player.y + 55));
             };
         });
-        Update();
+        timer();
+        animate();
     };
 
-    function Update() {
+    function timer() {
+        if(bossTimer < 300) {
+            bossTimer++;
+        } else {
+            bossTimer = 300;
+        }
+        bossHpBar.css({"width": bossTimer/3 + "%"});
+        setTimeout(timer, 1000);
+    }
+
+    function animate() {
         context.clearRect(0, 0, canvasWidth, canvasHeight);
 
         //if(player.moveLeft) {player.x = player.x - stepX};
@@ -277,82 +308,118 @@ $(document).ready(function() {
             }
         }
 
-        // Burung 1
-        var birdLength1 = bird1.length;
-        for (var i = birdLength1-1; i > -1; i--) {
-            var tmpBird = bird1[i];
-            draw_bird1(tmpBird.x, tmpBird.y);
-            bird1[i].x = bird1[i].x - birdSpeedRed;
-            var bulletsLength = bullets.length;
+        if(bossTimer >= 300) {
+            bird1.splice(bird1);
+            bird2.splice(bird2);
+			bird3.splice(bird3);
+			moveTimer++;
+			if(moveTimer % 100 == 0 ){
+				bird4.x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth/2;
+				bird4.y = Math.floor(Math.random()*(canvasHeight - canvasHeight/2));
+			}
+			bird4.x = bird4.x - birdSpeedGray;
+			draw_bird4(bird4.x, bird4.y);
+			var bulletsLength = bullets.length;
 			for (var j = bulletsLength-1; j > -1; j--) {
 				var tmpBullet = bullets[j];
-				if (tmpBird.x + 50 >= tmpBullet.x && tmpBird.x + 0 < tmpBullet.x + 10 &&
-                    tmpBird.y + 35 >= tmpBullet.y && tmpBird.y + 0 < tmpBullet.y + 6.6) {
-                        var idxBird = bird1.indexOf(tmpBird);
+
+                if (bird4.x + 200 >= tmpBullet.x && bird4.x + 0 < tmpBullet.x + 10 &&
+                    bird4.y + 144 >= tmpBullet.y && bird4.y + 0 < tmpBullet.y + 6.6) {
                         var idxBullet = bullets.indexOf(tmpBullet);
-                        bird1.splice(idxBird,1);
                         bullets.splice(idxBullet,1);
-                        scoreNum.html(score += 2);
-                        break;
+                        if(maxHpBird > 0) {
+                            maxHpBird -= 10;
+                        } else {
+                            bird4.splice(bird4);
+                        }
                     }
             }
-            if (tmpBird.x + 50 >= player.x && tmpBird.x + 0 < player.x + 150 &&
-                tmpBird.y + 35 >= player.y && tmpBird.y + 0 < player.y + 121) {
+            if (bird4.x + 200 >= player.x && bird4.x + 0 < player.x + 150 &&
+                bird4.y + 144 >= player.y && bird4.y + 0 < player.y + 121) {
+                    maxHp = 0;
+                }
+            if(bird4.x <= 10) {
+                draw_bird4(bird4.x, bird4.y);
+            }
+        }
+        if(bossTimer > 200) {
+            // Burung 1
+            var birdLength1 = bird1.length;
+            for (var i = birdLength1-1; i > -1; i--) {
+                var tmpBird = bird1[i];
+                draw_bird1(tmpBird.x, tmpBird.y);
+                bird1[i].x = bird1[i].x - birdSpeedRed;
+                var bulletsLength = bullets.length;
+                for (var j = bulletsLength-1; j > -1; j--) {
+                    var tmpBullet = bullets[j];
+                    if (tmpBird.x + 50 >= tmpBullet.x && tmpBird.x + 0 < tmpBullet.x + 10 &&
+                        tmpBird.y + 35 >= tmpBullet.y && tmpBird.y + 0 < tmpBullet.y + 6.6) {
+                            var idxBird = bird1.indexOf(tmpBird);
+                            var idxBullet = bullets.indexOf(tmpBullet);
+                            bird1.splice(idxBird,1);
+                            bullets.splice(idxBullet,1);
+                            scoreNum.html(score += 2);
+                            break;
+                        }
+                }
+                if (tmpBird.x + 50 >= player.x && tmpBird.x + 0 < player.x + 150 &&
+                    tmpBird.y + 35 >= player.y && tmpBird.y + 0 < player.y + 121) {
+                        var idxBird = bird1.indexOf(tmpBird);
+                        bird1.splice(idxBird, 1);
+                        if(maxHp > 0) {maxHp -= 10};
+                        break;
+                    }
+                if(tmpBird.x <= 10) {
                     var idxBird = bird1.indexOf(tmpBird);
                     bird1.splice(idxBird, 1);
-                    if(maxHp > 0) {maxHp -= 10};
                     break;
                 }
-            if(tmpBird.x <= 10) {
-                var idxBird = bird1.indexOf(tmpBird);
-                bird1.splice(idxBird, 1);
-                break;
-            }
-            while(bird1.length < numBirds) {
-                var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth/2;
-                var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight-190/2) + canvasHeight/2);
-                bird1.push(new Bird(x, y));
+                while(bird1.length < numBirds) {
+                    var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth;
+                    var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight/5)) + canvasHeight/5;
+                    bird1.push(new Bird(x, y));
+                }
             }
         }
-
-        // Burung 2
-        var birdLength2 = bird2.length;
-        for (var i = birdLength2-1; i > -1; i--) {
-            var tmpBird = bird2[i];
-            draw_bird2(tmpBird.x, tmpBird.y);
-            bird2[i].x = bird2[i].x - birdSpeedYellow;
-            var bulletsLength = bullets.length;
-			for (var j = bulletsLength-1; j > -1; j--) {
-				var tmpBullet = bullets[j];
-				if (tmpBird.x + 50 >= tmpBullet.x && tmpBird.x + 0 < tmpBullet.x + 10 &&
-                    tmpBird.y + 35 >= tmpBullet.y && tmpBird.y + 0 < tmpBullet.y + 6.6) {
+        if(bossTimer > 100) {
+            // Burung 2
+            var birdLength2 = bird2.length;
+            for (var i = birdLength2-1; i > -1; i--) {
+                var tmpBird = bird2[i];
+                draw_bird2(tmpBird.x, tmpBird.y);
+                bird2[i].x = bird2[i].x - birdSpeedYellow;
+                var bulletsLength = bullets.length;
+                for (var j = bulletsLength-1; j > -1; j--) {
+                    var tmpBullet = bullets[j];
+                    if (tmpBird.x + 50 >= tmpBullet.x && tmpBird.x + 0 < tmpBullet.x + 10 &&
+                        tmpBird.y + 35 >= tmpBullet.y && tmpBird.y + 0 < tmpBullet.y + 6.6) {
+                            var idxBird = bird2.indexOf(tmpBird);
+                            var idxBullet = bullets.indexOf(tmpBullet);
+                            bird2.splice(idxBird,1);
+                            bullets.splice(idxBullet,1);
+                            scoreNum.html(++score);
+                            break;
+                        }
+                }
+                if (tmpBird.x + 50 >= player.x && tmpBird.x + 0 < player.x + 150 &&
+                    tmpBird.y + 35 >= player.y && tmpBird.y + 0 < player.y + 121) {
                         var idxBird = bird2.indexOf(tmpBird);
-                        var idxBullet = bullets.indexOf(tmpBullet);
-                        bird2.splice(idxBird,1);
-                        bullets.splice(idxBullet,1);
-                        scoreNum.html(++score);
+                        bird2.splice(idxBird, 1);
+                        if(maxHp > 0) {maxHp -= 10};
                         break;
                     }
-            }
-            if (tmpBird.x + 50 >= player.x && tmpBird.x + 0 < player.x + 150 &&
-                tmpBird.y + 35 >= player.y && tmpBird.y + 0 < player.y + 121) {
+                if(tmpBird.x <= 10) {
                     var idxBird = bird2.indexOf(tmpBird);
                     bird2.splice(idxBird, 1);
-                    if(maxHp > 0) {maxHp -= 10};
                     break;
                 }
-            if(tmpBird.x <= 10) {
-                var idxBird = bird2.indexOf(tmpBird);
-                bird2.splice(idxBird, 1);
-                break;
-            }
-            while(bird2.length < numBirds) {
-                var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth/2;
-                var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight-190/2)) + canvasHeight/1.5;
-                bird2.push(new Bird(x, y));
+                while(bird2.length < numBirds) {
+                    var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth;
+                    var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight/5)) + canvasHeight/5;
+                    bird2.push(new Bird(x, y));
+                }
             }
         }
-
         // Burung 3
         var birdLength3 = bird3.length;
         for (var i = birdLength3-1; i > -1; i--) {
@@ -360,13 +427,15 @@ $(document).ready(function() {
             draw_bird3(tmpBird.x, tmpBird.y);
             bird3[i].x = bird3[i].x - birdSpeedGray;
             var bulletsLength = bullets.length;
-			for (var j = bulletsLength-1; j > -1; j--) {
-				var tmpBullet = bullets[j];
-				if (tmpBird.x + 50 >= tmpBullet.x && tmpBird.x + 0 < tmpBullet.x + 10 &&
+            for (var j = bulletsLength-1; j > -1; j--) {
+                var tmpBullet = bullets[j];
+                if (tmpBird.x + 50 >= tmpBullet.x && tmpBird.x + 0 < tmpBullet.x + 10 &&
                     tmpBird.y + 35 >= tmpBullet.y && tmpBird.y + 0 < tmpBullet.y + 6.6) {
                         var idxBird = bird3.indexOf(tmpBird);
                         var idxBullet = bullets.indexOf(tmpBullet);
+                        bird3.splice(idxBird,1);
                         bullets.splice(idxBullet,1);
+                        scoreNum.html(++score);
                         break;
                     }
             }
@@ -383,49 +452,9 @@ $(document).ready(function() {
                 break;
             }
             while(bird3.length < numBirds) {
-                var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth/2;
-                bird3.push(new Bird(x, 440));
-            }
-        }
-        if(score >= 5) {
-            bird1.splice(bird1);
-            bird2.splice(bird2);
-            bird3.splice(bird3);
-            
-            var birdLength4 = bird4.length;
-            for (var i = birdLength4-1; i > -1; i--) {
-                var tmpBird = bird4[i];
-                draw_bird4(tmpBird.x, tmpBird.y);
-                if(bird4.length < 2) bird4.push(new Bird(800, canvasHeight/4));
-                bird4[i].x = bird4[i].x - birdSpeedGray;
-                var bulletsLength = bullets.length;
-                for (var j = bulletsLength-1; j > -1; j--) {
-                    var tmpBullet = bullets[j];
-                    if (tmpBird.x + 200 >= tmpBullet.x && tmpBird.x + 0 < tmpBullet.x + 10 &&
-                        tmpBird.y + 144 >= tmpBullet.y && tmpBird.y + 0 < tmpBullet.y + 6.6) {
-                            var idxBird = bird4.indexOf(tmpBird);
-                            var idxBullet = bullets.indexOf(tmpBullet);
-                            bullets.splice(idxBullet,1);
-                            if(maxHpBird > 0) {
-                                maxHpBird -= 10;
-                            } else {
-                                bird4.splice(idxBird, 1);
-                            }
-                            break;
-                        }
-                }
-                if (tmpBird.x + 200 >= player.x && tmpBird.x + 0 < player.x + 150 &&
-                    tmpBird.y + 144 >= player.y && tmpBird.y + 0 < player.y + 121) {
-                        var idxBird = bird4.indexOf(tmpBird);
-                        bird4.splice(idxBird, 1);
-                        maxHp = 0;
-                        break;
-                    }
-                if(tmpBird.x <= 10) {
-                    var idxBird = bird4.indexOf(tmpBird);
-                    bird4.splice(idxBird, 1);
-                    break;
-                }
+                var x = Math.floor(Math.random()*(canvasWidth - canvasWidth/2))+canvasWidth;
+                var y = Math.floor(Math.random()*(canvasHeight-190 - canvasHeight/5)) + canvasHeight/5;
+                bird3.push(new Bird(x, y));
             }
         }
 
@@ -460,7 +489,7 @@ $(document).ready(function() {
         hpBar.css({"width": maxHp + "%"});
         petrolBar.css({"width": maxPetrol/5 + "%"});
         if(playGame) {
-            setTimeout(Update, 33);
+            setTimeout(animate, 33);
         };
     };
 });

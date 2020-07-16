@@ -127,6 +127,11 @@
 .ruleTable td {
     width: 25%;
     vertical-align: top;
+    background-color: white;
+}
+
+.img-langkah {
+    height: 90px;
 }
 
 #uiCredit {
@@ -146,9 +151,7 @@
     font-size: 14px;
 }
 
-.created hr {
-    margin: 0;
-}
+.created p, .created hr, .created, h3 {margin: 3px 0;}
 
 .created img:not(.stmik) {
     width: 300px;
@@ -193,35 +196,72 @@
 .hp {
     position: absolute;
     margin: 10px;
-    padding: 5px;
     float: left;
     width: 300px;
     height: 25px;
-    border: 1px solid black;
+    border: 2px solid #009933;
+    border-radius: 10px;
     background-color: white;
 }
 
 #hpBar {
-    width: 1%;
+    width: 10%;
     height: 100%;
+    border-radius: 9px;
     background-color: rgb(70, 255, 70);
+}
+
+.hp span {
+    position: absolute;
+    margin-top: -24px;
+    width: 100%;
+    margin-left: -50%;
 }
 
 .petrol {
     position: absolute;
     margin: 10px 10px 10px 478px;
-    padding: 5px;
     float: left;
     width: 300px;
     height: 25px;
-    border: 1px solid black;
+    border: 2px solid #900;
+    border-radius: 10px;
     background-color: white;
 }
 
 #petrolBar {
-    width: 1%;
+    width: 25%;
     height: 100%;
-    background-color: rgb(250, 70, 70);
+    border-radius: 9px;
+    background-color: #fa4646;
+}
+
+.petrol span {
+    position: absolute;
+    margin-top: -24px;
+    width: 100%;
+    margin-left: -50%;
+}
+
+.bossHp {
+    margin: auto;
+    width: 500px;
+    height: 20px;
+    border: 2px solid #ff3300;
+    border-radius: 10px;
+    background-color: white;
+}
+
+#bossHpBar {
+    width: 33%;
+    height: 100%;
+    border-radius: 9px;
+    background-color: orange;
+}
+
+.bossHp span{
+    position: absolute;
+    width: 100%;
 }
 
 .groundBackground {
